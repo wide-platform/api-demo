@@ -1,31 +1,40 @@
-
-# API TO CALCULATE BMI WITH WEIGHT IN KG & HEIGHT IN METERS
-
-from flask import Flask, jsonify, request
+from flask import Flask,jsonify,request
 
 app=Flask(__name__)
 
-@app.route('/')
-def hello():
-	return "WELCOME TO BMI CALCULATION"
+@app.route('/good')
+
+def home():
+	return("hare is good buy")
 	
-	
-# GET METHOD	
-@app.route("/getbmi", methods=['GET'])
-def get():
-	height = input("Input your height in Meters: ")
-	weight = input("Input your weight in Kilogram: ")
-	return jsonify(height,weight)
 
 
-# POST METHOD	
-@app.route("/postbmi", methods=['POST'])
-def post():
-	data = request.get_json()
-	height = data['height']
-	weight = data['weight']
-	result = float(weight/(height*height))
-	return jsonify("BMI IS:",result)
+@app.route('/',methods=['POST'])                   
+def bmi():
+	data=request.get_json()
+	name=data['name']
+	weight=data['weight'] #in kg
+	height=data['height'] #in m
+	res=(int(weight)/(float(height)*float(height)))
 
-if __name__ == "_main_":
-	app.run(debug=True)
+	if res<20:
+		return(jsonify({"bmi (you are lean) ":res}))
+	elif res>25:
+		return(jsonify({"bmi (you are fat) ":res}))
+	else :			
+		return(jsonify({"bmi (you are normal) ":res}))
+
+
+
+@app.route('/name',methods=['GET'])
+def name():
+	name = "reha"
+	return(name)
+	 
+	 
+	 
+	 
+app.run(port=1000)
+
+if __name__=="main":
+ app.run(debug=True,port=1000)
